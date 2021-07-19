@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.spring</groupId>
-	<artifactId>SpringService</artifactId>
+	<artifactId>SpringBoot-Ionic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SpringService</name>
+	<name>SpringBoot-Ionic</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
