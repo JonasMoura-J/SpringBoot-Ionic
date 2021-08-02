@@ -1,6 +1,8 @@
 package com.web.SpringService.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.web.SpringService.domain.Categoria;
+import com.web.SpringService.dto.CategoriaDTO;
 import com.web.SpringService.service.CategoriaService;
 
 @RestController
@@ -28,8 +31,15 @@ public class CategoriaController {
 	@RequestMapping(value="/{id}")
 	public ResponseEntity<Categoria> findById(@PathVariable Integer id){
 		Categoria obj = service.find(id);
-		
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		List<Categoria> categorias = service.findAll();
+		List<CategoriaDTO> categoriasDTO = categorias.stream()
+				.map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(categoriasDTO);
 	}
 	
 	@PostMapping
