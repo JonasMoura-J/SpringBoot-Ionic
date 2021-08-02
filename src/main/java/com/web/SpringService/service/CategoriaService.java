@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort.Direction;
 import com.web.SpringService.domain.Categoria;
+import com.web.SpringService.dto.CategoriaDTO;
 import com.web.SpringService.repositories.CategoriaRepository;
 import com.web.SpringService.service.exceptions.DataIntegrityException;
 import com.web.SpringService.service.exceptions.ObjectNotFoundException;
@@ -57,5 +58,9 @@ public class CategoriaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que posssui produtors");
 		}
+	}
+	
+	public Categoria dtoToCategotia(CategoriaDTO dto) {
+		return new Categoria(dto.getId(), dto.getNome());
 	}
 }
