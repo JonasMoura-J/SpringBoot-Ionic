@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,6 +41,19 @@ public class CategoriaController {
 		List<Categoria> categorias = service.findAll();
 		List<CategoriaDTO> categoriasDTO = categorias.stream()
 				.map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(categoriasDTO);
+	}
+	
+	@GetMapping
+	@RequestMapping(value="/page")
+	public ResponseEntity<Page<CategoriaDTO>> findPaged(
+			@RequestParam(value="page", defaultValue = "0") Integer page,
+			@RequestParam(value="linesPerPage", defaultValue = "24") Integer linesPerPage,
+			@RequestParam(value="orderBy", defaultValue = "nome") String orderBy,
+			@RequestParam(value="direction", defaultValue = "ASC") String direction){
+		
+		Page<Categoria> categorias = service.findPaged(page, linesPerPage, orderBy, direction);
+		Page<CategoriaDTO> categoriasDTO = categorias.map(x -> new CategoriaDTO(x));
 		return ResponseEntity.ok().body(categoriasDTO);
 	}
 	
