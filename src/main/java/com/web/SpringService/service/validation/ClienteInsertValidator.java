@@ -6,12 +6,19 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.web.SpringService.controller.exception.FieldMessage;
+import com.web.SpringService.domain.Cliente;
 import com.web.SpringService.domain.enums.TipoCliente;
 import com.web.SpringService.dto.ClienteNewDto;
+import com.web.SpringService.repositories.ClienteRepository;
 import com.web.SpringService.service.validation.utils.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDto>{
+	
+	@Autowired
+	ClienteRepository repository;
 	
 	@Override
 	public void initialize(ClienteInsert cliente) {
@@ -24,6 +31,11 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		
 		validarCpf(cliente, exceptions);
 		validarCnpj(cliente, exceptions);
+		
+		Cliente validacaoEmail = repository.findByEmail(cliente.getEmail());
+		if(validacaoEmail != null) {
+			exceptions.add(new FieldMessage("email", "Email em uso"));
+		}
 		
 		for (FieldMessage fieldMessage : exceptions) {
 			context.disableDefaultConstraintViolation();
