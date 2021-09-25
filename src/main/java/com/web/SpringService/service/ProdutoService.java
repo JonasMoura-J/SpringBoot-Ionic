@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
 
 import com.web.SpringService.domain.Categoria;
 import com.web.SpringService.domain.Pedido;
@@ -15,6 +16,7 @@ import com.web.SpringService.repositories.CategoriaRepository;
 import com.web.SpringService.repositories.ProdutoRepository;
 import com.web.SpringService.service.exceptions.ObjectNotFoundException;
 
+@Service
 public class ProdutoService {
 	
 	@Autowired

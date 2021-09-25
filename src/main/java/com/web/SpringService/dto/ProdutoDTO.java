@@ -2,6 +2,8 @@ package com.web.SpringService.dto;
 
 import java.io.Serializable;
 
+import com.web.SpringService.domain.Produto;
+
 public class ProdutoDTO implements Serializable { 
 	private static final long serialVersionUID = 1L;
 	
@@ -18,6 +20,12 @@ public class ProdutoDTO implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+	}
+	
+	public ProdutoDTO(Produto produto) {
+		id = produto.getId();
+		nome = produto.getNome();
+		preco = produto.getPreco();
 	}
 
 	public Integer getId() {
