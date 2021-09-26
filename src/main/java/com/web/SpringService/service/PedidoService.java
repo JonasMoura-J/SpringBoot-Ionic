@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.web.SpringService.domain.Categoria;
 import com.web.SpringService.domain.PagamentoComBoleto;
 import com.web.SpringService.domain.Pedido;
 import com.web.SpringService.domain.enums.SituacaoPagamento;
