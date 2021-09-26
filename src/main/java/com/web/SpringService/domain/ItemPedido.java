@@ -30,6 +30,10 @@ private static final long serialVersionUID = 1L;
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
+	
+	public double getSubtotal() {
+		return(preco - desconto) * quantidade;
+	}
 
 	@JsonIgnore
 	public Pedido getPedido() {
