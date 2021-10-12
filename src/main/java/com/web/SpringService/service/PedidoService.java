@@ -13,6 +13,7 @@ import com.web.SpringService.domain.enums.SituacaoPagamento;
 import com.web.SpringService.repositories.ItemPedidoRepository;
 import com.web.SpringService.repositories.PagamentoRepository;
 import com.web.SpringService.repositories.PedidoRepository;
+import com.web.SpringService.service.email.EmailService;
 import com.web.SpringService.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,38 +31,40 @@ public class PedidoService {
 	ProdutoService produtoService;
 	@Autowired
 	ClienteService clienteService;
+	@Autowired
+	EmailService emailService;
 	
 	public Pedido buscar(Integer id) {
-		Optional<Pedido> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
+		Optional<Pedido> pedido = repository.findById(id);
+		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 	
 	@Transactional
-	public Pedido insert(Pedido obj) {
-		obj.setId(null);
-		obj.setInstante(LocalDateTime.now());
-		obj.setCliente(clienteService.find(obj.getCliente().getId()));
+	public Pedido insert(Pedido pedido) {
+		pedido.setId(null);
+		pedido.setInstante(LocalDateTime.now());
+		pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
 		
-		obj.getPagamento().setEstado(SituacaoPagamento.PENDENTE);
-		obj.getPagamento().setPedido(obj);
+		pedido.getPagamento().setEstado(SituacaoPagamento.PENDENTE);
+		pedido.getPagamento().setPedido(pedido);
 		
-		if(obj.getPagamento() instanceof PagamentoComBoleto) {
-			PagamentoComBoleto pagamento = (PagamentoComBoleto) obj.getPagamento();
-			boletoService.preecherPagamentoComBoleto(pagamento, obj.getInstante());
+		if(pedido.getPagamento() instanceof PagamentoComBoleto) {
+			PagamentoComBoleto pagamento = (PagamentoComBoleto) pedido.getPagamento();
+			boletoService.preecherPagamentoComBoleto(pagamento, pedido.getInstante());
 		}
-		repository.save(obj);
-		pagamentoRepository.save(obj.getPagamento());
+		repository.save(pedido);
+		pagamentoRepository.save(pedido.getPagamento());
 		
-		obj.getItens().stream().forEach(x -> {
+		pedido.getItens().stream().forEach(x -> {
 			x.setDesconto(0.0);
 			x.setProduto(produtoService.buscar(x.getProduto().getId()));
 			x.setPreco(x.getProduto().getPreco());
-			x.setPedido(obj);		 
+			x.setPedido(pedido);		 
 		});
 		
-		itemPedidoRepository.saveAll(obj.getItens());
-		System.out.println(obj);
-		return obj;
+		itemPedidoRepository.saveAll(pedido.getItens());
+		emailService.sendOrderConfirmationEmail(pedido);
+		return pedido;
 	}
 }
