@@ -1,8 +1,10 @@
 package com.web.SpringService.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,17 +17,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.ibm.icu.text.NumberFormat;
+import com.ibm.icu.text.SimpleDateFormat;
+
 @Entity
 public class Pedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	static DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 //	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
-	private LocalDate instante;
+	private LocalDateTime instante;
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
 	private Pagamento pagamento;
@@ -44,7 +50,7 @@ public class Pedido implements Serializable{
 	public Pedido() {
 	}
 
-	public Pedido(Integer id, LocalDate instante, Cliente cliente, Endereco enderecoDeEntrega) {
+	public Pedido(Integer id, LocalDateTime instante, Cliente cliente, Endereco enderecoDeEntrega) {
 		super();
 		this.id = id;
 		this.instante = instante;
@@ -68,11 +74,11 @@ public class Pedido implements Serializable{
 		this.id = id;
 	}
 
-	public LocalDate getInstante() {
+	public LocalDateTime getInstante() {
 		return instante;
 	}
 
-	public void setInstante(LocalDate instante) {
+	public void setInstante(LocalDateTime instante) {
 		this.instante = instante;
 	}
 
@@ -131,5 +137,27 @@ public class Pedido implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido número: ");
+		builder.append(getId());
+		builder.append(", Instante: ");
+		builder.append(getInstante().format(formatter));
+		builder.append(", Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", Situação do pagamento: ");
+		builder.append(getPagamento().getEstado().getDescricao());
+		builder.append("\nDetalhes:\n");
+		for(ItemPedido item : getItens()) {
+			builder.append(item.toString());
+		}
+		builder.append("Valor total: ");
+		builder.append(numberFormat.format(getValorTotal()));
+		return builder.toString();
 	}
 }

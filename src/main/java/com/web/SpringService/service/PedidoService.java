@@ -1,6 +1,7 @@
 package com.web.SpringService.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class PedidoService {
 	BoletoService boletoService;
 	@Autowired
 	ProdutoService produtoService;
+	@Autowired
+	ClienteService clienteService;
 	
 	public Pedido buscar(Integer id) {
 		Optional<Pedido> obj = repository.findById(id);
@@ -38,7 +41,8 @@ public class PedidoService {
 	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
-		obj.setInstante(LocalDate.now());
+		obj.setInstante(LocalDateTime.now());
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		
 		obj.getPagamento().setEstado(SituacaoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
@@ -52,11 +56,13 @@ public class PedidoService {
 		
 		obj.getItens().stream().forEach(x -> {
 			x.setDesconto(0.0);
-			x.setPreco(produtoService.buscar(x.getProduto().getId()).getPreco());
+			x.setProduto(produtoService.buscar(x.getProduto().getId()));
+			x.setPreco(x.getProduto().getPreco());
 			x.setPedido(obj);		 
 		});
 		
 		itemPedidoRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		return obj;
 	}
 }

@@ -1,6 +1,6 @@
 package com.web.SpringService.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,13 +125,13 @@ public class DBService {
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 	
-		Pedido ped1 = new Pedido(null, LocalDate.now(), cli1, e1);
-		Pedido ped2 = new Pedido(null, LocalDate.now(), cli1, e2);
+		Pedido ped1 = new Pedido(null, LocalDateTime.now(), cli1, e1);
+		Pedido ped2 = new Pedido(null, LocalDateTime.now(), cli1, e2);
 		
 		Pagamento pagto1 = new PagamentoComCartao(null, SituacaoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pagto1);
 		
-		Pagamento pagto2 = new PagamentoComBoleto(null, SituacaoPagamento.PENDENTE, ped2, LocalDate.now(), null);
+		Pagamento pagto2 = new PagamentoComBoleto(null, SituacaoPagamento.PENDENTE, ped2, LocalDateTime.now(), null);
 		ped2.setPagamento(pagto2);
 		
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
