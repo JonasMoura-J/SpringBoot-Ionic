@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.ibm.icu.text.NumberFormat;
-import com.ibm.icu.text.SimpleDateFormat;
 
 @Entity
 public class Pedido implements Serializable{
