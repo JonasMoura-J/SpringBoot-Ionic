@@ -1,12 +1,8 @@
 package com.web.SpringService.service.email;
 
-import org.springframework.mail.SimpleMailMessage;
-
-import com.web.SpringService.domain.Pedido;
-
 public interface EmailService {
 	
-	void sendOrderConfirmationEmail(Pedido pedido);
+	void sendOrderConfirmationEmail(String to, String subject, String msg);
 	
-	void sendEmail(SimpleMailMessage msg);
+	void sendEmail(String to, String subject, String message);
 }

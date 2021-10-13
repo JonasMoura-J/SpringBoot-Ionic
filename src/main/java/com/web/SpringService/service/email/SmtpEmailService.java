@@ -1,22 +1,11 @@
 package com.web.SpringService.service.email;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import com.web.SpringService.domain.Pedido;
 
 public class SmtpEmailService extends AbstractEmailService{
-	
-	@Autowired
-	MailSender mailSender;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SmtpEmailService.class);
-	
-	@Override
-	public void sendEmail(SimpleMailMessage msg) {
-		LOGGER.info("Enviando Email.. ");
-		mailSender.send(msg);
-		LOGGER.info("Email enviado!");
-	}
+
+	public void sendOrderConfirmationEmail(String to, String subject, Pedido pedido) {
+		String message = prepareSimpleMailMessageFromPedido(pedido);
+		sendEmail(to,subject, message);
+	}	
 }

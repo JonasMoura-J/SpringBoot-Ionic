@@ -64,7 +64,7 @@ public class PedidoService {
 		});
 		
 		itemPedidoRepository.saveAll(pedido.getItens());
-		emailService.sendOrderConfirmationEmail(pedido);
+		emailService.sendOrderConfirmationEmail(pedido.getCliente().getEmail(), "Pedido Confirmado", pedido.toString());
 		return pedido;
 	}
 }
