@@ -32,11 +32,12 @@
       <tr th:each="item : ${pedido.itens}"> 
         <td th:text="${item.produto.nome}">nome</td> 
         <td th:text="${item.quantidade}">quantidade</td> 
-        <td th:text="${item.preco}">preco</td>
+        <td th:text="${item.getPrecoFormatado()}">preco</td>
+        <td th:text="${item.getSubtotal()}">subTotal</td> 
       </tr> 
     </table> 
     <p> 
-      Valor total: <span th:text="${pedido.valorTotal}"></span> 
+      Valor total: <span th:text="${pedido.getValorTotalFormatado()}"></span> 
     </p> 
   </div> 
 </body> 

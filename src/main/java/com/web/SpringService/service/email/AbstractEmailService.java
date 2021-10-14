@@ -37,24 +37,7 @@ public abstract class AbstractEmailService implements EmailService {
 
 	@Override
 	public void sendOrderConfirmationEmail(String to, String subject, Pedido pedido) {
-		//String message = prepareSimpleMailMessageFromPedido(pedido);
 		sendEmail(to,subject, htmlFromTemplatePedido(pedido));
-	}
-	
-//	@Override
-//	public void sendOrderConfirmationHtmlEmail(Pedido pedido) {
-//		MimeMessage message = prepareMimeMessageFromPedido(pedido);
-//		sendHtmlEmail(message);
-//	}
-//
-//	protected MimeMessage prepareMimeMessageFromPedido(Pedido pedido) {
-//		MimeMessage message;
-//		MimeMessageH
-//		return null;
-//	}
-
-	protected String prepareSimpleMailMessageFromPedido(Pedido pedido) {
-		return null;
 	}
 
 	public String getMailSMTPServer() {

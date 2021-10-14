@@ -23,13 +23,11 @@ import com.ibm.icu.text.NumberFormat;
 public class Pedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	static DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-//	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private LocalDateTime instante;
 	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="pedido")
@@ -63,6 +61,10 @@ public class Pedido implements Serializable{
 			soma += itemPedido.getSubtotal();
 		}
 		return soma;
+	}
+	public String getValorTotalFormatado() {
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		return numberFormat.format(getValorTotal());
 	}
 	
 	public Integer getId() {

@@ -11,7 +11,7 @@ import com.ibm.icu.text.NumberFormat;
 
 @Entity
 public class ItemPedido implements Serializable{
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	@JsonIgnore
 	@EmbeddedId
@@ -35,6 +35,11 @@ private static final long serialVersionUID = 1L;
 	
 	public double getSubtotal() {
 		return(preco - desconto) * quantidade;
+	}
+	
+	public String getSubtotalFormatado() {
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		return numberFormat.format(getSubtotal());
 	}
 
 	@JsonIgnore
@@ -80,6 +85,10 @@ private static final long serialVersionUID = 1L;
 
 	public Double getPreco() {
 		return preco;
+	}
+	public String getPrecoFormatado() {
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		return numberFormat.format(getPreco());
 	}
 
 	public void setPreco(Double preco) {
