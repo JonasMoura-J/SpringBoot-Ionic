@@ -10,7 +10,10 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import com.web.SpringService.domain.Pedido;
 
@@ -20,6 +23,9 @@ public abstract class AbstractEmailService implements EmailService {
 
 	@Value("${default.sender}")
 	private String sender;
+	
+	@Autowired
+	TemplateEngine engine;
 
 	private String mailSMTPServer;
 	private String mailSMTPServerPort;
@@ -30,9 +36,22 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 
 	@Override
-	public void sendOrderConfirmationEmail(String to, String subject, String msg) {
-		sendEmail(to,subject, msg);
+	public void sendOrderConfirmationEmail(String to, String subject, Pedido pedido) {
+		//String message = prepareSimpleMailMessageFromPedido(pedido);
+		sendEmail(to,subject, htmlFromTemplatePedido(pedido));
 	}
+	
+//	@Override
+//	public void sendOrderConfirmationHtmlEmail(Pedido pedido) {
+//		MimeMessage message = prepareMimeMessageFromPedido(pedido);
+//		sendHtmlEmail(message);
+//	}
+//
+//	protected MimeMessage prepareMimeMessageFromPedido(Pedido pedido) {
+//		MimeMessage message;
+//		MimeMessageH
+//		return null;
+//	}
 
 	protected String prepareSimpleMailMessageFromPedido(Pedido pedido) {
 		return null;
@@ -84,7 +103,7 @@ public abstract class AbstractEmailService implements EmailService {
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			msg.setFrom(new InternetAddress(sender));
 			msg.setSubject(subject);
-			msg.setContent(message, "text/plain");
+			msg.setContent(message, "text/html");
 
 		} catch (Exception e) {
 			System.out.println(">> Erro: Completar Mensagem");
@@ -104,5 +123,11 @@ public abstract class AbstractEmailService implements EmailService {
 		}
 
 		LOGGER.info("Email enviado!");
+	}
+	
+	protected String htmlFromTemplatePedido(Pedido pedido) {
+		Context context = new Context();
+		context.setVariable("pedido", pedido);
+		return engine.process("email/confirmacaoPedido", context);
 	}
 }
