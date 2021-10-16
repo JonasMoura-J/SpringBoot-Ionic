@@ -1,4 +1,4 @@
-package com.web.SpringService.config.security;
+package com.web.SpringService.config;
 
 import java.util.Arrays;
 
