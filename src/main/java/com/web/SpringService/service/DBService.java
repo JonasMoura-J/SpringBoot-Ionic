@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.web.SpringService.domain.Categoria;
@@ -32,23 +33,25 @@ import com.web.SpringService.repositories.ProdutoRepository;
 @Service
 public class DBService {
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	CategoriaRepository categoriaRepository;
 	@Autowired
-	private ProdutoRepository produtoRepository;
+	ProdutoRepository produtoRepository;
 	@Autowired
-	private EstadoRepository estadoRepository;
+	EstadoRepository estadoRepository;
 	@Autowired
-	private CidadeRepository cidadeRepository;
+	CidadeRepository cidadeRepository;
 	@Autowired
-	private ClienteRepository clienteRepository;
+	ClienteRepository clienteRepository;
 	@Autowired
-	private EnderecoRepository enderecoRepository;
+	EnderecoRepository enderecoRepository;
 	@Autowired
-	private PedidoRepository pedidoRepository;
+	PedidoRepository pedidoRepository;
 	@Autowired
-	private PagamentoRepository pagamentoRepository;
+	PagamentoRepository pagamentoRepository;
 	@Autowired
-	private ItemPedidoRepository itemPedidoRepository;
+	ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public void instantiateTestDatabase() {
 		Categoria cat1 = new Categoria(null, "Informática");
@@ -113,7 +116,7 @@ public class DBService {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "jonasmourat9090@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA);
+		Cliente cli1 = new Cliente(null, "Maria Silva", "jonasmourat9090@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
 		
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		
