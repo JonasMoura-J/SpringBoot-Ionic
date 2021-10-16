@@ -18,6 +18,7 @@ import com.web.SpringService.domain.PagamentoComBoleto;
 import com.web.SpringService.domain.PagamentoComCartao;
 import com.web.SpringService.domain.Pedido;
 import com.web.SpringService.domain.Produto;
+import com.web.SpringService.domain.enums.Perfil;
 import com.web.SpringService.domain.enums.SituacaoPagamento;
 import com.web.SpringService.domain.enums.TipoCliente;
 import com.web.SpringService.repositories.CategoriaRepository;
@@ -116,16 +117,21 @@ public class DBService {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "jonasmourat9090@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
-		
+		Cliente cli1 = new Cliente(null, "Jonas", "jonasmourat9090@gmail.com", "18402827705", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+		cli1.addPerfils(Perfil.ADMIN);
+		
+		Cliente cli2 = new Cliente(null, "Maria Silva", "jonasmourat9090@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e3 = new Endereco(null, "Avenida e", "123", null, "Centro", "1234234", cli2, c2);
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e1, e3));
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 	
 		Pedido ped1 = new Pedido(null, LocalDateTime.now(), cli1, e1);
