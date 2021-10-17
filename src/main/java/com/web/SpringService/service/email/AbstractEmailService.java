@@ -39,6 +39,11 @@ public abstract class AbstractEmailService implements EmailService {
 	public void sendOrderConfirmationEmail(String to, String subject, Pedido pedido) {
 		sendEmail(to,subject, htmlFromTemplatePedido(pedido));
 	}
+	
+	@Override
+	public void sendNewPasswordEmail(String email, String newPass) {
+		sendEmail(email, "Solicitação de nova senha", "Nova senha: " + newPass);
+	}
 
 	public String getMailSMTPServer() {
 		return mailSMTPServer;
