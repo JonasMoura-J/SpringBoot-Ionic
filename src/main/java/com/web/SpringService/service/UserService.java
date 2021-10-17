@@ -6,7 +6,7 @@ import com.web.SpringService.security.UserSpringSecurity;
 
 public class UserService {
 	
-	public static UserSpringSecurity autenticated() {
+	public static UserSpringSecurity authenticated() {
 		try {
 			return (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		} catch (Exception e) {
