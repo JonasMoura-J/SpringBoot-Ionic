@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.web.SpringService.domain.Cliente;
 import com.web.SpringService.repositories.ClienteRepository;
 import com.web.SpringService.security.UserSpringSecurity;
 
+@Service
 public class UserDetailServiceImpl implements UserDetailsService{
 	
 	@Autowired

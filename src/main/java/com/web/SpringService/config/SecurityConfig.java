@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.web.SpringService.security.JWTAuthenticationFilter;
+import com.web.SpringService.security.JWTUtil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
@@ -26,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	Environment env;
 	@Autowired
 	UserDetailsService detailsService;
+	@Autowired
+	JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATHERS_GET = {
 			"/produtos/**",
@@ -45,9 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
-		.antMatchers(HttpMethod.GET, PUBLIC_MATHERS_GET).permitAll()
-		.antMatchers(PUBLIC_MATHERS).permitAll()
-		.anyRequest().authenticated();
+			.antMatchers(HttpMethod.GET, PUBLIC_MATHERS_GET).permitAll()
+			.antMatchers(PUBLIC_MATHERS).permitAll()
+			.anyRequest().authenticated();
+		http.addFilter(new JWTAuthenticationFilter(jwtUtil, authenticationManager()));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
