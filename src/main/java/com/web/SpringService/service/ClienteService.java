@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import com.web.SpringService.repositories.EnderecoRepository;
 import com.web.SpringService.security.UserSpringSecurity;
 import com.web.SpringService.service.exceptions.AuthorizationException;
 import com.web.SpringService.service.exceptions.DataIntegrityException;
+import com.web.SpringService.service.exceptions.FileException;
 import com.web.SpringService.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -115,6 +117,12 @@ public class ClienteService {
 		UserSpringSecurity user = UserService.authenticated();
 		if(user == null) {
 			throw new AuthorizationException("Acesso negado");
+		}
+		
+		String extencao = FilenameUtils.getExtension(file.getOriginalFilename());
+		
+		if(!"PNG".equals(extencao) && !"jpg".equals(extencao)) {
+			throw new FileException("Somente imagens PNG e JPG são aceitas");
 		}
 		
 		URI uri = s3Service.uplodFile(file);

@@ -147,6 +147,14 @@ public class Cliente implements Serializable{
 		this.pedidos = pedidos;
 	}
 
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -171,12 +179,5 @@ public class Cliente implements Serializable{
 			return false;
 		return true;
 	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}	
+	
 }
