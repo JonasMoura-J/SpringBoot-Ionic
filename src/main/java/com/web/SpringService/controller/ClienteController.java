@@ -47,6 +47,14 @@ public class ClienteController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@GetMapping
+	@RequestMapping(value="/email/{email}")
+	public ResponseEntity<Cliente> findByEmail(@PathVariable String email){
+		Cliente obj = service.findByEmail(email);
+		
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<ClienteDTO>> findAll(){

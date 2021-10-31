@@ -46,7 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	private static final String[] PUBLIC_MATHERS_POST = {
 			"/clientes",
-			"/auth/forgot/**"
+			"/auth/forgot/**",
+			"/login"
+			
 	};
 	
 	@Override
